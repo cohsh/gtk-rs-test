@@ -2,7 +2,7 @@ use gtk::prelude::*;
 
 fn main() {
     let application =
-        gtk::Application::new(Some("com.github.keens.gtk-examples.basic"), Default::default());
+        gtk::Application::new(Some("com.github.cohsh.gtk-rs-test"), Default::default());
 
     application.connect_activate(build_ui);
 
@@ -12,20 +12,22 @@ fn main() {
 fn build_ui(application: &gtk::Application) {
     let window = gtk::ApplicationWindow::new(application);
 
-    window.set_title(Some("First GTK Program"));
-    window.set_default_size(350, 70);
+    window.set_title(Some("Widgets"));
+    window.set_default_size(200, 400);
+
+    let margin = 30;
 
     let vbox = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
 
         .halign(gtk::Align::Start)
 
-        .spacing(6)
+        .spacing(margin)
 
-        .margin_bottom(6)
-        .margin_top(6)
-        .margin_start(6)
-        .margin_end(6)
+        .margin_bottom(margin)
+        .margin_top(margin)
+        .margin_start(margin)
+        .margin_end(margin)
 
         .build();
 
@@ -54,9 +56,9 @@ fn build_scale() -> gtk::Scale {
 
         .adjustment(
             &gtk::Adjustment::builder()
-                .lower(0.0)
+                .lower(-100.0)
                 .upper(100.0)
-                .value(50.0)
+                .value(0.0)
                 .step_increment(1.0)
                 .page_increment(10.0)
                 .build(),
