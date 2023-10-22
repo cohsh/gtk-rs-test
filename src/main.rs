@@ -1,4 +1,5 @@
 use gtk::prelude::*;
+use gtk::{FileChooserAction, FileChooserNative};
 
 fn main() {
     let application =
@@ -14,6 +15,17 @@ fn build_ui(application: &gtk::Application) {
 
     window.set_title(Some("Widgets"));
     window.set_default_size(200, 400);
+
+    let open_dialog = FileChooserNative::new(
+        Some("choose your File"),
+        Some(&window),
+        FileChooserAction::Open,
+        Some("Open"),
+        Some("Cancel"),
+    );
+    
+    open_dialog.show();
+
 
     let margin = 30;
 
