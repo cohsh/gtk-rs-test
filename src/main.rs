@@ -50,6 +50,7 @@ fn build_ui(application: &gtk::Application) {
     vbox.append(&build_switch());
     vbox.append(&build_password_entry());
     vbox.append(&build_frame());
+    vbox.append(&build_label());
 
     window.show();
 }
@@ -102,4 +103,11 @@ fn build_frame() -> gtk::Frame {
         .child(&build_switch())
         .build();
     frame
+}
+
+fn build_label() -> gtk::Label {
+    let label = gtk::Label::builder()
+        .label("Label")
+        .build();
+    label
 }
