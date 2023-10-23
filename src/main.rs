@@ -1,5 +1,7 @@
 use gtk::prelude::*;
 use gtk::{FileChooserAction, FileChooserNative};
+use std::path::Path;
+use gtk::gdk::{ContentFormats};
 
 fn main() {
     let application =
@@ -52,7 +54,13 @@ fn build_ui(application: &gtk::Application) {
     vbox.append(&build_frame());
     vbox.append(&build_label());
 
-    window.show();
+    let entry = build_entry();
+    vbox.append(&entry);
+
+    let drop_target = build_drop_target();
+    window.add_controller(drop_target);
+
+    window.present();
 }
 
 fn build_button() -> gtk::Button {
@@ -110,4 +118,36 @@ fn build_label() -> gtk::Label {
         .label("Label")
         .build();
     label
+}
+
+fn build_entry() -> gtk::Entry {
+    let entry = gtk::Entry::builder()
+        .editable(true)
+        .build();
+    entry
+}
+
+fn build_drop_target() -> gtk::DropTarget {
+    let formats = ContentFormats::builder()
+        .add_mime_type("application/pdf")
+        .build();
+
+    let drop_target = gtk::DropTarget::builder()
+        .formats(&formats)
+        .build();
+    
+    drop_target.connect_drop(move |_, value, _, _| {
+        if let Ok(uri) = value.get::<String>() {
+            if uri.starts_with("file://") {
+                let path = uri.trim_start_matches("file://");
+                if path.ends_with(".pdf") {
+                    println!("PDF file dropped: {:?}", Path::new(path));
+                } else {
+                    println!("The dropped file is not a PDF file.");
+                }
+            }
+        }
+        true
+    });
+    drop_target
 }
